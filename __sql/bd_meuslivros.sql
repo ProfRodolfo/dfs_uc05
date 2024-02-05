@@ -131,3 +131,73 @@ values
 ('Mike Murach and Associates');
 
 select * from tbl_editoras;
+
+
+
+
+insert into tbl_Assuntos (Assunto)
+values
+('Ficção'), ('Botânica'),
+('Eletrônica'), ('Matemática'),
+('Aventura'), ('Literatura'),
+('Informática'), ('Suspense');
+
+
+
+INSERT INTO tbl_Livros (NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdAssunto, IdEditora)
+VALUES
+('Linux Command Line and Shell Scripting','9781118983843', '20150109', 165.55, 816, 7, 4),
+('SSH, the Secure Shell','9780596008956', '20050517', 295.41, 672, 7, 2),
+('Using Samba','9780596002565', '20031221', 158.76, 449, 7, 2),
+('A Arte da Eletrônica', '9788582604342', '20170308', 176.71, 1160, 7, 6),
+('Windows Server 2012 Inside Out','9780735666313', '20130125', 179.51, 1584, 7, 3),
+('Murach´s MySQL','9781943872367', '20190501', 227.64, 650, 7, 10),
+('Practical Electronics for Inventors', '9781259587542', '20160711', 119.58, 1056, 3, 5);
+
+
+select * from tbl_livros;
+
+update tbl_livros set NomeLivro = 'SSH, o Shell Seguro' where idLivro = 2;
+update tbl_livros set PrecoLivro = PrecoLivro + 10 where idLivro = 1;
+
+select * from tbl_assuntos;
+
+-- CUIDADOOOOOOO UPDATE SEM WHERE 
+update tbl_assuntos set assunto = 'Biologia';
+-- TODOS OS ITENS DA TBL_ASSUNTOS FORAM ALTERADOS PARA 'BIOLOGIA'
+
+update tbl_Assuntos  set Assunto = 'Ficção' where idassunto = 1; 
+update tbl_Assuntos  set Assunto = 'Botânica' where idassunto = 2; 
+update tbl_Assuntos  set Assunto = 'Eletrônica' where idassunto = 3; 
+update tbl_Assuntos  set Assunto = 'Matemática' where idassunto = 4; 
+update tbl_Assuntos  set Assunto = 'Aventura' where idassunto = 5; 
+update tbl_Assuntos  set Assunto = 'Literatura' where idassunto = 6; 
+update tbl_Assuntos  set Assunto = 'Informática' where idassunto = 7; 
+update tbl_Assuntos  set Assunto = 'Suspense' where idassunto = 8; 
+
+-- UPDADE CORRETO
+update tbl_assuntos set assunto = 'Biologia' where idassunto = 2;
+
+select * from tbl_editoras;
+
+insert into tbl_editoras (nomeeditora) values ('Bóson Editorial');
+
+delete from tbl_editoras where IdEditora = 12;
+
+CREATE TABLE tbl_emprestimo (
+    IdEmprestimo TINYINT PRIMARY KEY,
+    NomeLivro VARCHAR(60) NOT NULL,
+    NomeEmprestador VARCHAR(50) NOT NULL
+);
+
+insert into tbl_emprestimo (Idemprestimo, nomelivro, nomeemprestador)
+value 
+(20 , 'o cortiço', 'joao da silva'),
+(21, 'a moreninha', 'Marcos de souza'),
+(22, 'macunaíma', 'Ana de Abreu');
+
+select * from tbl_emprestimo;
+
+truncate table tbl_emprestimo; 
+
+drop table tbl_emprestimo; 
