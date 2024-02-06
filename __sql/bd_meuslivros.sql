@@ -201,3 +201,51 @@ select * from tbl_emprestimo;
 truncate table tbl_emprestimo; 
 
 drop table tbl_emprestimo; 
+
+-- exercicio Delete
+
+select * from tbl_autores;
+
+insert into tbl_autores (sobrenomeautor, nomeautor) 
+values
+('king', 'Stephen');
+
+select * from tbl_editoras;
+insert into tbl_editoras (nomeeditora) values ('Scribner');
+
+select * from tbl_assuntos;
+insert into tbl_assuntos (assunto) values ('Terror');
+
+insert into tbl_livros (NomeLivro, ISBN13, DataPub, PrecoLivro, NumeroPaginas, IdEditora, IdAssunto)
+values
+('It', '9781501182099', '2017-04-11', 48.74, 1000, 
+(select ideditora from tbl_editoras where nomeeditora = 'Scribner'), 
+(select idassunto from tbl_assuntos where assunto = 'Terror')
+);
+
+-- Verificar registros corretos
+
+select * from tbl_livros;
+
+select * from tbl_editoras;
+delete from tbl_editoras where  NomeEditora = 'Scribner';
+
+delete from tbl_autores where nomeautor = 'Stephen';
+delete from tbl_autores where nomeautor = 'Stephen' and SobrenomeAutor = 'King' ; 
+select * from tbl_autores;
+
+select nomeautor, SobrenomeAutor from tbl_autores;
+
+select * from tbl_livros;
+
+select * from tbl_livros order by NomeLivro asc;
+
+select * from tbl_livros order by NomeLivro desc;
+
+select nomelivro, ideditora from tbl_livros order by IdEditora;
+
+select nomelivro, precolivro from tbl_livros order by PrecoLivro desc;
+
+select nomelivro, datapub, idassunto from tbl_livros order by IdAssunto, NomeLivro;
+
+
