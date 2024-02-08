@@ -249,3 +249,104 @@ select nomelivro, precolivro from tbl_livros order by PrecoLivro desc;
 select nomelivro, datapub, idassunto from tbl_livros order by IdAssunto, NomeLivro;
 
 
+### Limitar número de registros - LIMIT ###
+-- Retornar os dois livros mais baratos da tabela de livros:
+
+select * from tbl_livros order by NomeLivro;
+
+select nomelivro, precolivro from tbl_livros order by PrecoLivro limit 2;
+
+select nomelivro, precolivro from tbl_livros order by PrecoLivro desc limit 3;
+select * from tbl_livros;
+
+-- 3, 4 e 5º livros com maior numero de pagina
+select nomelivro, numeropaginas from tbl_livros 
+order by NumeroPaginas desc limit  2, 3;
+
+
+
+select nomelivro, datapub from tbl_livros where IdEditora = 2;
+
+select idautor, nomeautor from tbl_autores where SobrenomeAutor = 'Stanek';
+select * from tbl_autores where SobrenomeAutor = 'Stanek';
+
+-- Indices
+
+alter table tbl_editoras add index inomeeditora (nomeeditora);
+show index from tbl_editoras;
+explain select * from tbl_editoras where nomeeditora = 'Springer';
+create index idx_editora on tbl_editoras (nomeeditora);
+drop index idx_editora on tbl_editoras;
+drop index inomeeditora on tbl_editoras;
+
+
+-- Exemplos – AND, OR e NOT
+SELECT IdLivro, NomeLivro, IdEditora FROM tbl_Livros
+WHERE IdLivro > 2 AND IdEditora < 4;
+SELECT IdLivro, NomeLivro, IdEditora FROM tbl_Livros
+WHERE IdLivro > 2 OR IdEditora < 4;
+SELECT IdLivro, NomeLivro, IdEditora FROM tbl_Livros
+WHERE NOT IdEditora = 10;
+SELECT IdLivro, NomeLivro, IdEditora FROM tbl_Livros
+WHERE IdLivro > 2 AND NOT IdEditora <= 4;
+ 
+### Aliases com as - apelido
+
+select nomelivro  as livro from tbl_livros where IdLivro > 2;
+
+SELECT NomeAutor AS Nome,SobrenomeAutor Sobrenome FROM tbl_Autores AS Autores;
+SELECT NomeLivro AS Livro, PrecoLivro AS 'Preço do Livro'
+FROM tbl_Livros AS Livros ORDER BY 'Preço do Livro' DESC;
+
+
+###LISTA DE EXERCICIOS ORDER BY
+-- Todas os dados da tabela de editoras
+
+select * FROM tbl_editoras;
+-- Somente os nomes de editoras da tabela de editoras, em ordem alfabética;
+select nomeeditora as editoras from tbl_editoras order by editoras asc;
+-- Nomes de livros, preços e datas de publicação, em ordem inversa de data de publicação (do mais recente para o mais antigo)
+select nomelivro, precolivro, datapub from tbl_livros order by DataPub desc;
+-- Nomes e sobrenomes de autores, em ordem alfabética de sobrenomes Nomes de livros, IDs de assuntos e editora, sem ordem definida.
+select nomeautor, sobrenomeautor from tbl_autores order by SobrenomeAutor asc;
+select nomelivro, idassunto, ideditora from tbl_livros;
+-- Lista de assuntos em ordem alfabética.
+select assunto from tbl_assuntos order by assunto asc;
+
+select * from tbl_autores;
+
+select count(*) as total from  tbl_autores;
+
+select * from tbl_livros;
+select count(ideditora) from tbl_livros;
+select count(distinct ideditora) from tbl_livros;
+
+select precolivro from tbl_livros;
+
+select max(precolivro) as 'livro mais caro' from tbl_livros;
+select min(precolivro) as 'livro mais barato' from tbl_livros;
+select avg(precolivro) as 'Média valor livro' from tbl_livros;
+select sum(precolivro) as 'total gasto livros' from tbl_livros;
+select sum(precolivro) / count(*)  from tbl_livros;
+
+select count(*) as 'Quant.livros', sum(numeropaginas) as 'páginas totais',
+avg(numeropaginas) as 'Média de pags.' from tbl_livros; 
+
+## Exercícios - Funções de Agregação
+-- Escreva uma consulta que retorne o preço total dos livros publicados pela editora de ID igual a 3
+SELECT SUM(PrecoLivro) AS PrecoTotal
+FROM tbl_Livros
+WHERE IdEditora = 3;
+-- Escreva uma consulta que retorne a média de preços dos livros publicados pelas editoras de IDs iguais a 2 e 3
+select * from  tbl_livros;
+
+SELECT AVG(PrecoLivro) AS MediaPreco
+FROM tbl_Livros
+-- WHERE IdEditora IN (2, 3);
+where ideditora =2 or ideditora = 3;
+
+-- Retorne o nome e o preço do livro mais caro na tabela de livros.
+SELECT NomeLivro, PrecoLivro
+FROM tbl_Livros
+WHERE PrecoLivro = (SELECT MAX(PrecoLivro) FROM tbl_Livros);
+
