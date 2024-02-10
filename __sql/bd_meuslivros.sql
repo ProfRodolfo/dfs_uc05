@@ -350,3 +350,112 @@ SELECT NomeLivro, PrecoLivro
 FROM tbl_Livros
 WHERE PrecoLivro = (SELECT MAX(PrecoLivro) FROM tbl_Livros);
 
+
+-- BETWEEN - Exemplos
+SELECT * FROM tbl_Livros WHERE DataPub BETWEEN '20040517' AND '20110517';
+SELECT NomeLivro AS Livro, PrecoLivro AS Preço FROM tbl_Livros WHERE PrecoLivro BETWEEN 150.00 AND 200.00;
+SELECT NomeLivro, PrecoLivro FROM tbl_Livros WHERE PrecoLivro BETWEEN 170.00 AND 180.00OR PrecoLivro BETWEEN 220.00 AND 300.00;
+
+-- Cláusula Like
+SELECT * FROM tbl_Livros WHERE NomeLivro LIKE 'A%';
+SELECT * FROM tbl_Livros WHERE NomeLivro NOT LIKE 'S%';
+SELECT NomeLivro FROM tbl_Livros WHERE NomeLivro LIKE '_i%';
+SELECT NomeLivro AS Livro, PrecoLivro AS Valor FROM tbl_Livros WHERE NomeLivro NOT LIKE 'A%' AND PrecoLivro <= 190.00;
+
+-- GROUP BY - 
+SELECT IdAssunto, SUM(NumeroPaginas) FROM tbl_Livros GROUP BY IdAssunto;
+SELECT IdEditora, SUM(PrecoLivro) FROM tbl_livros GROUP BY IdEditora;
+SELECT IdEditora, AVG(NumeroPaginas), IdAssunto FROM tbl_livros GROUP BY IdEditora;
+SELECT IdEditora, SUM(PrecoLivro) FROM tbl_livros WHERE NumeroPaginas >= 1000 GROUP BY IdEditora ORDER BY NumeroPaginas;
+
+-- Filtragem em grupos com HAVING
+SELECT IdEditora, AVG(NumeroPaginas), IdAssunto FROM tbl_livros GROUP BY IdEditora HAVING AVG(NumeroPaginas) >= 1000;
+
+SELECT IdEditora, SUM(NumeroPaginas) AS 
+SomaPaginas FROM tbl_livros WHERE IdAssunto > 3 GROUP BY IdEditora 
+HAVING SomaPaginas >= 900 ORDER BY IdEditora;
+
+
+###
+Select * from tbl_livros;
+select * from tbl_editoras;
+
+select * from tbl_livros inner join tbl_editoras; 
+
+select * from tbl_livros inner join tbl_editoras on  tbl_livros.IdEditora = tbl_editoras.IdEditora;
+
+select tbl_livros.NomeLivro, tbl_livros.ISBN13, tbl_assuntos.Assunto from tbl_livros join tbl_assuntos on
+tbl_livros.IdAssunto = tbl_assuntos.IdAssunto;
+
+Select * from tbl_livros; 
+select * from tbl_assuntos;
+
+SELECT L.NomeLivro AS Livros, E.NomeEditora AS
+Editoras
+FROM tbl_Livros AS L
+JOIN tbl_Editoras AS E
+ON L.IdEditora = E.IdEditora
+WHERE E.NomeEditora LIKE 'M%';
+
+
+
+Select * from tbl_livros; 
+select * from tbl_assuntos;
+
+##############################################################################################################
+SELECT * FROM tbl_assuntos
+LEFT JOIN tbl_livros
+ON tbl_livros.IdAssunto = tbl_assuntos.IdAssunto;
+##############################################################################################################
+SELECT * FROM tbl_Assuntos
+LEFT JOIN tbl_Livros
+ON tbl_Livros.IdAssunto = tbl_Assuntos.IdAssunto
+WHERE tbl_Livros.IdAssunto IS NULL;
+##############################################################################################################
+SELECT * FROM tbl_Livros AS Li
+RIGHT JOIN tbl_Editoras AS Ed
+ON Li.IdEditora = Ed.IdEditora;
+##############################################################################################################
+SELECT * FROM tbl_Livros
+RIGHT JOIN tbl_Editoras
+ON tbl_Livros.IdEditora = tbl_Editoras.IdEditora
+WHERE tbl_Livros.IdEditora IS NULL;
+##############################################################################################################
+SELECT * FROM tbl_Livros
+CROSS JOIN tbl_livrosautores;
+##############################################################################################################
+
+
+-- union
+
+SELECT NomeLivro Livro, PrecoLivro Preço, 'Livro Caro' Resultado
+FROM tbl_Livros
+WHERE PrecoLivro >= 150.00
+UNION
+SELECT NomeLivro Livro, PrecoLivro Preço, 'Preço Razoável' Resultado
+FROM tbl_Livros
+WHERE PrecoLivro < 150.00
+ORDER BY Preço;
+##############################################################################################################
+SELECT L.NomeLivro Livro, L.PrecoLivro 'Preço Normal',
+ L.PrecoLivro * 0.90 'Preço Ajustado', A.Assunto
+FROM tbl_Livros L INNER JOIN tbl_Assuntos A
+ON L.IdAssunto = A.IdAssunto
+WHERE L.PrecoLivro > 200.00
+UNION
+
+SELECT L.NomeLivro Livro, L.PrecoLivro 'Preço Normal', L.PrecoLivro * 1.15 'Preço Ajustado', A.Assunto
+FROM tbl_Livros L INNER JOIN tbl_Assuntos A
+ON L.IdAssunto = A.IdAssunto
+WHERE A.Assunto = 'Eletrônica'
+ORDER BY 'Preço Ajustado' DESC;
+##############################################################################################################
+SELECT * FROM tbl_Assuntos
+LEFT JOIN tbl_Livros
+ON tbl_Livros.IdAssunto = tbl_Assuntos.IdAssunto
+UNION
+SELECT * FROM tbl_Assuntos
+RIGHT JOIN tbl_Livros
+ON tbl_Livros.IdAssunto = tbl_Assuntos.IdAssunto;
+##############################################################################################################
+
